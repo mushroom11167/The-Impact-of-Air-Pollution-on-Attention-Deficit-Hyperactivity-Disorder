@@ -1,0 +1,32 @@
+\frametitle{Result}
+
+\begin{table}
+^^I\centering
+^^I\begin{tabular}{llll}
+^^I^^I\toprule
+^^I^^ILog & $\substack{Estimate \\ (Std.Error)}$ & Logit & $\substack{Estimate \\ (Std.Error)}$\\
+^^I^^I\midrule
+^^I^^I(Intercept) & $\substack{1.194 \\ (0.057)}$ & (Intercept) & $\substack{-0.047 \\ (0.269)}$ \\
+^^I^^I\addlinespace
+^^I^^Ihosp & $\substack{0.201 \\ (0.020)}$ & hosp & $\substack{-0.800 \\ (0.421)}$ \\
+^^I^^I\addlinespace
+^^I^^Ihealthpoor & $\substack{0.285 \\ (0.045)}$ & & \\
+^^I^^I\addlinespace
+^^I^^Ihealthexcellent & $\substack{-0.319 \\ (0.060)}$ & & \\
+^^I^^I\addlinespace
+^^I^^Inumchron & $\substack{0.129 \\ (0.012)}$ & numchron & $\substack{-1.248 \\ (0.178)}$ \\
+^^I^^I\addlinespace
+^^I^^Igendermale & $\substack{-0.080 \\ (0.031)}$ & gendermale & $\substack{0.648 \\ (0.200)}$ \\
+^^I^^I\addlinespace
+^^I^^Ischool & $\substack{0.021 \\ (0.004)}$  & school & $\substack{-0.084 \\ (0.026)}$ \\
+^^I^^I\addlinespace
+^^I^^Iprivinsyes & $\substack{0.126 \\ (0.042)}$ & privinsyes & $\substack{-1.176 \\ (0.220)}$ \\
+^^I^^I\bottomrule
+^^I\end{tabular}
+
+\end{table}
+
+
+
+
+

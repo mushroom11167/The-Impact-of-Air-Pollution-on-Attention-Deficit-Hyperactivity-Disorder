@@ -1,0 +1,580 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
+\usetheme{SimpleDarkBlue}
+
+\usepackage{hyperref}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{url}
+\usepackage{ragged2e}
+\usepackage{listings}
+\lstset{
+	%backgroundcolor=\color{red!50!green!50!blue!50},%程式碼塊背景色為淺灰色
+	rulesepcolor= \color{gray}, %程式碼塊邊框顏色
+	breaklines=true,  %程式碼過長則換行
+	numbers=left, %行號在左側顯示
+	numberstyle= \small,%行號字型
+	%keywordstyle= \color{blue},%關鍵字顏色
+	commentstyle=\color{gray}, %註釋顏色
+	frame=shadowbox%用方框框住程式碼塊
+}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{fontspec}
+\usepackage{threeparttable}
+\usepackage{lipsum}
+\useoutertheme[subsection=false]{miniframes}
+\setmainfont{Times New Roman}
+\usepackage{calligra}
+\linespread{1.2}
+\makeatletter
+\let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry%
+\def\beamer@writeslidentry@miniframesoff{%
+	\expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
+	{%else
+		% removed \addtocontents commands
+		\clearpage\beamer@notesactions%
+	}
+}
+\newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
+\newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
+\makeatother
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[short title]{The Impact of Air Pollution on Attention Deficit Hyperactivity Disorder}
+
+\author[Jia-Yi] {Jia-Yi Lin}
+
+\institute[NDHU] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
+{
+	Department of Applied Mathematics \\
+	National Dong Hwa University 
+	\vskip 3pt
+}
+\date{\today} % Date, can be changed to a custom date
+
+
+%----------------------------------------------------------------------------------------
+%	PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+	
+	\begin{frame}
+		% Print the title page as the first slide
+		\titlepage
+	\end{frame}
+	
+	\begin{frame}{Overview}
+		
+		\tableofcontents
+	\end{frame}
+	%------------------------------------------------
+	\section{Objective}
+	%------------------------------------------------
+	\begin{frame}{Objective}
+		\begin{Center}
+			Exploring the potential cause of air pollution in the development of ADHD
+		\end{Center}
+		
+	\end{frame}
+	%------------------------------------------------
+	\section{Introduction}
+	%------------------------------------------------
+	\begin{frame}{Attention Deficit Hyperactivity Disorder (ADHD)}
+		Attention deficit hyperactivity disorder (ADHD) affects school-aged children about 3 – 12\% and adults approximately 3 – 5\% 		
+		\begin{itemize}
+			\item Inattention
+			\item Hyperactivity
+			\item Impulsiveness
+		\end{itemize}
+		
+	\end{frame}
+	\begin{frame}{National Health Insurance Research Database (NHIRD)}
+		
+		\begin{itemize}
+			\item H\_NHI\_OPDTE : Id, Sex, Age, Disease
+			\item H\_NHI\_OPDTO : Drug
+			\item H\_NHI\_ ENROLENROL : Id, Birth, City
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{Air Pollution}
+		\begin{itemize}
+			\item Ministry of Environment
+			\item 78 sites
+			\item CO, NO2, PM10, PM2.5, etc.
+			\item Health impact
+			\item Enviroment effect
+		\end{itemize}
+	\end{frame}
+
+	%------------------------------------------------
+	\section{Data}
+	%------------------------------------------------
+	\begin{frame}{Data }
+		\justifying
+		2009 - 2018 year\\
+		
+		We using the variables as described below\\
+		\begin{itemize}
+			\item \textbf{\color{red}COUNT} is the number of doctor visits\\
+			\item \textbf{CITY} is place of residence\\
+			\item \textbf{SEX} is gender\\
+			\item \textbf{AGE} is age, age less than or equal to 24\\
+			\item \textbf{CO, NO2, PM10, PM2.5} are air pollutants\\
+			\item \textbf{DD, DLD, BDD, Adjust, Anxiety, ASD} are comorbidity\\
+		\end{itemize}
+		
+	\end{frame}
+	
+	%------------------------------------------------
+	\section{Method}
+	%------------------------------------------------
+	
+	
+	\begin{frame}{Zero-inflated Poisson Model (ZIP)}
+		\begin{Center}
+			\[
+			Y_{i} \sim 
+			\begin{cases}
+				0 \quad with \quad probability \quad \alpha_{i}\\
+				Poisson(\lambda_{i}) \quad with \quad probability \quad (1 - \alpha_{i})
+			\end{cases}
+			\]
+		\end{Center}
+	\end{frame}
+	%------------------------------------------------
+	\begin{frame}{Zero-inflated Poisson Model (ZIP)}
+		\begin{itemize}
+			\item $\alpha_{i}$ is the probability of excessive zeros
+			\item $Y_{i}$ is the number of occurrences
+			\item $\lambda_{i}$ is the average frequency of occurrences
+		\end{itemize}
+	
+		
+		
+		\begin{block}{The probability mass function of zero-inflated Poisson model}
+			\[
+			P_{r}(Y_{i} = y_{i}) = 
+			\begin{cases}
+				\alpha_{i} + (1 - \alpha_{i}) \exp^{-\lambda_{i}} & \text{if } y_{i} = 0 \\
+				(1 - \alpha_{i})\frac{\lambda_{i}^{y_{i}}\exp^{-\lambda_{i}}}{y_{i}!} & \text{if } y_{i} \neq 0 
+			\end{cases}
+			\]
+		\end{block}
+	\end{frame}
+	
+	\begin{frame}{Zero-inflated Poisson Model (ZIP)}
+		
+		\justifying The link functions are
+		
+		\begin{center}
+			 \[
+				\begin{aligned}
+					logit(\alpha_{i}) = \log\left(\frac{\alpha_{i}}{1 - \alpha_{i}}\right) &= x_{i}\beta_{1}\\
+					&\Rightarrow \frac{\alpha_{i}}{1-\alpha_{i}} = \exp(x_{i}\beta_{1})\\
+					&\Rightarrow \alpha = \exp(x_{i}\beta_{1})(1-\alpha_{i})\\
+					&\Rightarrow \alpha_{i} + \alpha_{i}\exp(x_{i}\beta_{1}) = \exp(x_{i}\beta_{1})\\
+					&\Rightarrow \alpha_{i} = \exp(x_{i}\beta_{1}) / 1 + \exp(x_{i}\beta_{1})\\
+				\end{aligned}
+				\]		
+			\[
+			\begin{aligned}
+				\log(\lambda_{i}) = x_{i}\beta_{2}
+				&\Rightarrow \lambda_{i} = \exp(x_{i}\beta_{2})
+			\end{aligned}
+			\]
+		\end{center}
+		
+	\end{frame}	
+	
+	
+	
+	
+	
+	%------------------------------------------------
+	\begin{frame}{Zero-inflated Poisson Model (ZIP)}
+		\[
+		f(Y_{i} = y_{i}) = \prod_{i = 1}^{n}f_{Y_{i}}(y_{i}) = \prod_{i = 1}^{n} \left[ \alpha_{i} + (1 - \alpha_{i})\exp^{-\lambda_{i}}I\{y_{i} = 0\} + (1 - \alpha_{i}) \frac{\lambda_{i}^{y_{i}}\exp^{-\lambda_{i}}}{y_{i}!}I\{y_{i} \neq 0\} \right]
+		\]
+		
+		\[
+		\begin{aligned}
+			\log f(Y_{i} = y_{i}) &= \log \left[\prod_{i = 1}^{n} \left[\alpha_{i} + (1 - \alpha_{i})\exp^{-\lambda_{i}}I\{y_{i} = 0\} + (1 - \alpha_{i}) \frac{\lambda_{i}^{y_{i}}\exp^{-\lambda_{i}}}{y_{i}!}I\{y_{i} \neq 0\} \right] \right]\\
+			&= \sum_{y_{i} = 0} \left[ \log \left[ \alpha_{i} + (1 - \alpha_{i}) \exp^{-\lambda_{i}} \right] \right]
+			+ \sum_{y_{i} \neq 0} \left[ \log(1 - \alpha_{i}) +  y_{i} \log \lambda_{i} - \lambda_{i} - \log y_{i}! \right]
+		\end{aligned}
+		\]
+		
+	\end{frame}
+	
+
+	%------------------------------------------------
+	\section{Results}
+	%------------------------------------------------
+	\begin{frame}{Distribution of Patients}
+		
+		\begin{table}[ht]
+			\centering
+			
+			\resizebox{0.45\textwidth}{!}{%
+				\begin{tabular}{lrrr}
+					\toprule
+					& \multicolumn{3}{c}{N (\%)$^1$} \\
+					\cmidrule(r){2-4}
+					Variables & ADHD & Non-ADHD & \\
+					& (N = 82,587) & (N = 7,019,304)  \\
+					\midrule
+					Sex  &  &  \\
+					\quad Male & 65,512 (79.325\%) & 3,545,035 (50.504\%)  \\
+					\quad Female & 17,075 (20.675\%) & 3,474,269 (49.496\%)  \\
+					Area & &  \\
+					\quad Northern & 50,698 (61.387\%) & 3,250,348 (46.306\%)  \\ 
+					\quad Central & 12,772 (15.465\%) & 1,754,087 (24.989\%) \\
+					\quad Southern & 17,123 (20.733\%) & 1,834,337 (26.133\%)  \\
+					\quad Easthern & 1,797(2.176\%) & 147,837 (2.106\%)\\
+					\quad Outlying Islands & 197 (0.239\%) & 32,695 (0.466\%)  \\
+					Medication  &  &  \\
+					\quad No & 19,821 (24.000\%) & 7,007,845 (99.837\%)  \\
+					\quad Yes & 62,766 (76.000\%) & 11,459 (0.163\%)  \\
+					Age (Mean $\pm$ SD) & $13.414 \pm 3.680$  & $15.709 \pm 6.525$ \\
+					\bottomrule
+				\end{tabular}
+			}
+			
+			
+		\end{table}
+		
+	\end{frame}
+	
+	
+
+	%------------------------------------------------
+	\begin{frame}{Zero-inflated Poisson (ZIP)}
+		\begin{center}
+			\begin{table}[h!]
+				\setlength{\tabcolsep}{3pt}
+				\resizebox{0.39\textwidth}{!}{%
+					\begin{tabular}{clcccc}
+						\toprule
+						& & \multicolumn{2}{c}{Count Model} & \multicolumn{2}{c}{Zero-inflation Model} \\
+						\cmidrule(lr){3-4} \cmidrule(lr){5-6}
+						Area & Variable & Estimate (Std. Error) & $\exp{\beta}$ & Estimate (Std. Error) & $\exp{\beta}$\\
+						\midrule
+						\multirow{5}{*}{Northern}
+						&Age    & -0.015 $(0.000)^{***}$ & 0.986& 0.045 $(0.000)^{***}$ &1.047\\
+						&Female & 0.110 $(0.001)^{***}$ & 1.116& 1.280 $(0.008)^{***}$ &3.597 \\
+						&CO     & -0.119 $(0.004)^{***}$ & 0.888& -0.591 $(0.021)^{***}$ &0.554 \\
+					    &PM10   & 0.010 $(0.002)^{***}$ & 1.011 & -0.023 $(0.011)^{*}$ &0.978 \\
+						&DD     & 1.134 $(0.002)^{***}$ & 3.108 & -1.595 $(0.021)^{***}$ &0.203 \\
+						\hline
+						\multirow{5}{*}{Central}
+						&Age    & -0.029 $(0.000)^{***}$ &0.971 &0.052 $(0.001)^{***}$ &1.053\\
+						&Female & 0.106 $(0.003)^{***}$ &1.112 &1.517 $(0.018)^{***}$ &4.559\\
+						&CO     & 0.170 $(0.004)^{***}$ &1.185 &-0.383 $(0.022)^{***}$ &0.682\\
+						&PM10   & 0.221 $(0.003)^{***}$ &1.247 &-0.191 $(0.018)^{***}$ &0.826\\
+						&DD     & 0.530 $(0.005)^{***}$ &1.699 &-1.385 $(0.046)^{***}$ &0.250\\
+						\hline
+						\multirow{5}{*}{Southern}
+						&Age & 0.015 $(0.000)^{***}$ &1.015& 0.071 $(0.001)^{***}$ &1.074\\
+						&Female & 0.043 $(0.003)^{***}$ &1.044& 1.501 $(0.015)^{***}$&4.486 \\
+						&CO & 0.105 $(0.003)^{***}$ &1.111& -0.289 $(0.015)^{***}$ &0.749\\
+						&PM10 & 0.173 $(0.005)^{***}$ &1.189& -0.219 $(0.024)^{***}$&0.803 \\
+						&DD & 1.020 $(0.004)^{***}$ &2.773& -1.550 $(0.043)^{***}$ &0.212\\
+						\hline
+						\multirow{5}{*}{Eastern}
+						&Age & 0.030 $(0.001)^{***}$ &1.030& 0.066 $(0.003)^{***}$&1.068 \\
+						&Female & 0.075 $(0.010)^{***}$ &1.078& 1.349 $(0.047)^{***}$&3.854 \\
+						&CO & 0.216 $(0.051)^{***}$ &1.241& -2.885 $(0.262)^{***}$&0.056 \\
+						&PM10 & -0.056 $(0.011)^{***}$ &0.946& -0.438 $(0.052)^{***}$&0.645 \\
+						&DD & 0.925 $(0.017)^{***}$ &2.522& -0.706 $(0.156)^{***}$&0.494 \\
+					
+						\bottomrule
+					\end{tabular}
+				}
+				\caption{Zero-inflated Poisson (ZIP)}
+			\end{table}
+		\end{center}
+		
+	\end{frame}
+	
+
+	
+	
+	%------------------------------------------------
+	\section{Conclusion}
+	%------------------------------------------------
+	\begin{frame}{Conclusion}
+		\begin{itemize}
+			\item \justifying The probability of health increases in female compared to male\\
+			(Huss et al. (2008); C.L.-C.Huang et al. (2016))
+			\item \justifying With increasing age, the probability of health increases\\
+			\item \justifying PM10 and CO have impact on zero part\\ (Riediker et al. (2004); Yorifuji et al. (2016))	\\
+			\item \justifying With ADHD, the overall probability of health decreases because of these comorbid conditions
+		\end{itemize}
+
+		
+	\end{frame}
+	
+	\miniframesoff
+    \setbeamertemplate{headline}{}
+	\begin{frame}{References}
+		% Beamer does not support BibTeX so references must be inserted manually as below
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem[A.Zeileis, C.Kleiber, S.Jackman]{p1} A.Zeileis, C.Kleiber, S.Jackman (2008)
+				\newblock Regression Models for Count Data in R
+				\newblock \emph{J.Stat.Softw} 27, 1–25.
+			\end{thebibliography}
+		}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem[ Alain F. Zuur , Elena N. Ieno , Neil Walker , Anatoly A. Saveliev , Graham M. Smith]{p1}  Alain F. Zuur , Elena N. Ieno , Neil Walker , Anatoly A. Saveliev , Graham M. Smith (2009)
+				\newblock Mixed Effects Models and Extensions in Ecology with R
+				\newblock \emph{New York}: Springer.
+			\end{thebibliography}
+		}
+		
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem [Faraone, S. V., Sergeant, J., Gillberg, C.,  Biederman, J. (2003)]{p1} Faraone, S. V., Sergeant, J., Gillberg, C.,  Biederman, J. (2003)
+				\newblock The worldwide prevalence of ADHD: is it an American condition?
+				\newblock World psychiatry : official journal of the World Psychiatric Association (WPA)
+			\end{thebibliography}
+		}
+		\end{frame}
+		\setbeamertemplate{headline}{}
+		\begin{frame}{References}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem  [Polanczyk, Guilherme and de Lima, Maur\'{\i}cio Silva and Horta, Bernardo Lessa and Biederman, Joseph and Rohde, Luis Augusto (2007)]{p1} Polanczyk, Guilherme and de Lima, Maur\'{\i}cio Silva and Horta, Bernardo Lessa and Biederman, Joseph and Rohde, Luis Augusto (2007)
+				\newblock The Worldwide Prevalence of ADHD: A Systematic Review and Metaregression Analysis
+				\newblock American Journal of Psychiatry
+			\end{thebibliography}
+		}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem [Erik G. Willcutt (2012)]{p1}Erik G. Willcutt (2012)
+				\newblock The Prevalence of DSM-IV Attention-Deficit/Hyperactivity Disorder: A Meta-Analytic Review
+				\newblock \emph Neurotherapeutics
+			\end{thebibliography}
+		}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem [Huss et al. (2008)]{p1}Huss et al. (2008) 
+				\newblock How often are German children and adolescents diagnosed with ADHD? Prevalence based on the judgment of health care professionals: results of the German health and examination survey (KiGGS)
+				\newblock \emph European child \& adolescent psychiatry
+			\end{thebibliography}
+		}
+	
+		
+		
+	\end{frame}
+	\setbeamertemplate{headline}{}
+	\begin{frame}{References}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem  [C.L.-C.Huang et al. (2016)]{p1} C.L.-C.Huang et al. (2016)
+				\newblock Gender ratios of administrative prevalence and incidence of attention-deficit/hyperactivity disorder (ADHD) across the lifespan: A nationwide population-based study in Taiwan
+				\newblock Psychiatry Research
+			\end{thebibliography}
+		}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem [Riediker et al (2004)]{p1} Riediker et al (2004)
+				\newblock Particulate matter exposure in cars is associated with cardiovascular effects in healthy young men
+				\newblock \emph American journal of respiratory and critical care medicine
+			\end{thebibliography}
+		}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem [Yorifuji et al (2016)]{p1}Yorifuji et al (2016)
+				\newblock Prenatal exposure to outdoor air pollution and child behavioral problems at school age in Japan
+				\newblock \emph Environment international
+			\end{thebibliography}
+		}
+
+		
+	\end{frame}
+	\setbeamertemplate{headline}{}
+	\begin{frame}{References}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem  [Shephard, E., Bedford, R., Milosavljevic, B., Gliga, T., Jones, E. J., Pickles, A., ... \& Volein, A. (2019)]{p1} Shephard, E., Bedford, R., Milosavljevic, B., Gliga, T., Jones, E. J., Pickles, A., ... \& Volein, A. (2019)
+				\newblock Early developmental pathways to childhood symptoms of attention‐deficit hyperactivity disorder, anxiety and autism spectrum disorder across the lifespan: A nationwide population-based study in Taiwan
+				\newblock Journal of Child Psychology and Psychiatr
+			\end{thebibliography}
+		}
+		\footnotesize{
+			\begin{thebibliography}{99}
+				\bibitem [Rowles, B. M., \& Findling, R. L. (2010)]{p1} Rowles, B. M., \& Findling, R. L. (2010)
+				\newblock Review of pharmacotherapy options for the treatment of attention‐deficit/hyperactivity disorder (ADHD) and ADHD‐like symptoms in children and adolescents with developmental disorders
+				\newblock \emph Developmental disabilities research reviews
+			\end{thebibliography}
+		}
+		
+		
+		
+	\end{frame}
+	%------------------------------------------------
+	
+	\appendix
+	
+	
+
+
+		%------------------------------------------------
+
+	\begin{frame}{Northern}
+		\begin{center}
+			\begin{table}[h!]
+				\setlength{\tabcolsep}{3pt}
+				\resizebox{0.55\linewidth}{!}{%
+					\begin{tabular}{lcccc}
+						\toprule
+						& \multicolumn{2}{c}{Count Model} & \multicolumn{2}{c}{Zero-inflation Model} \\
+						\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+						Variable & Estimate (Std. Error) & $\exp{\beta}$ & Estimate (Std. Error) & $\exp{\beta}$\\
+						\midrule
+						(Intercept) & 3.170 $(0.002)^{***}$ & 23.806 & 3.877 $(0.008)^{***}$ & 48.269\\
+						Age    & -0.015 $(0.000)^{***}$ & 0.986& 0.045 $(0.000)^{***}$ &1.047\\
+						Female & 0.110 $(0.001)^{***}$ & 1.116& 1.280 $(0.008)^{***}$ &3.597 \\
+						PM2.5  & 0.066 $(0.002)^{***}$ & 1.068 & 0.022 $(0.010)^{*}$ &1.022 \\
+						CO     & -0.119 $(0.004)^{***}$ & 0.888& -0.591 $(0.021)^{***}$ &0.554 \\
+						NO2    & 0.084 $(0.004)^{***}$ & 1.087& 0.491 $(0.019)^{***}$ &1.633 \\
+						PM10   & 0.010 $(0.002)^{***}$ & 1.011 & -0.023 $(0.011)^{*}$ &0.978 \\
+						DD     & 1.134 $(0.002)^{***}$ & 3.108 & -1.595 $(0.021)^{***}$ &0.203 \\
+						DLD    & 0.621 $(0.002)^{***}$ & 1.860 & -0.643 $(0.025)^{***}$ &0.526 \\
+						Adjustment Disorder & 0.047 $(0.005)^{***}$ & 1.048 & -1.148 $(0.031)^{***}$ &0.317 \\
+						Anxiety & -0.144 $(0.002)^{***}$ & 0.866 & -3.198 $(0.011)^{***}$ &0.041 \\
+						BDD    & -0.172 $(0.008)^{***}$ & 0.842 & -3.021 $(0.047)^{***}$ &0.049 \\
+						ASD    & 0.291 $(0.002)^{***}$ &  1.338 & -3.383 $(0.014)^{***}$ &0.034 \\
+						\bottomrule
+					\end{tabular}
+				}
+				\caption{Northern}
+			\end{table}
+		\end{center}
+		
+	\end{frame}
+	
+	\begin{frame}{Central}
+		\begin{center}
+			\begin{table}[h!]
+				\setlength{\tabcolsep}{3pt}
+				\resizebox{0.55\linewidth}{!}{%
+					\begin{tabular}{lcccc}
+						\toprule
+						& \multicolumn{2}{c}{Count Model} & \multicolumn{2}{c}{Zero-inflation Model} \\
+						\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+						Variable & Estimate (Std. Error) & $\exp{\beta}$ & Estimate (Std. Error) & $\exp{\beta}$\\
+						\midrule
+						(Intercept) & 3.290 $(0.005)^{***}$ &26.843 & 4.359 $(0.016)^{***}$ &78.179\\
+						Age    & -0.029 $(0.000)^{***}$ &0.971 &0.052 $(0.001)^{***}$ &1.053\\
+						Female & 0.106 $(0.003)^{***}$ &1.112 &1.517 $(0.018)^{***}$ &4.559\\
+						PM2.5  & -0.158 $(0.005)^{***}$ &0.854 &0.091 $(0.026)^{***}$ &1.095\\
+						CO     & 0.170 $(0.004)^{***}$ &1.185 &-0.383 $(0.022)^{***}$ &0.682\\
+						NO2    & -0.317 $(0.004)^{***}$ &0.728 &0.447 $(0.022)^{***}$ &1.564\\
+						PM10   & 0.221 $(0.003)^{***}$ &1.247 &-0.191 $(0.018)^{***}$ &0.826\\
+						DD     & 0.530 $(0.005)^{***}$ &1.699 &-1.385 $(0.046)^{***}$ &0.250\\
+						DLD    & 1.088 $(0.005)^{***}$ &2.968 &-0.956 $(0.051)^{***}$ &0.384\\
+						Adjustment Disorder & 0.211 $(0.010)^{***}$ &1.235& -1.833 $(0.056)^{***}$ &0.160\\
+						Anxiety & 0.089 $(0.006)^{***}$ &1.093 &-2.247 $(0.034)^{***}$ &0.106\\
+						BDD    & -0.310 $(0.037)^{***}$ &0.733 &-1.242 $(0.175)^{***}$ &0.289\\
+						ASD    & 0.303 $(0.004)^{***}$ &1.354 &-3.356 $(0.033)^{***}$ &0.035\\
+						\bottomrule
+					\end{tabular}
+				}
+				\caption{Central}
+			\end{table}
+		\end{center}
+		
+	\end{frame}
+	
+	
+	\begin{frame}{Southern}
+		
+		\begin{center}
+			\begin{table}[h!]
+				\setlength{\tabcolsep}{3pt}
+				\resizebox{0.55\linewidth}{!}{%
+					\begin{tabular}{lcccc}
+						\toprule
+						& \multicolumn{2}{c}{Count Model} & \multicolumn{2}{c}{Zero-inflation Model} \\
+						\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+						Variable & Estimate (Std. Error) & $\exp{\beta}$ & Estimate (Std. Error) & $\exp{\beta}$\\
+						\midrule
+						(Intercept) & 2.822 $(0.005)^{***}$ &16.810& 4.080 $(0.035)^{***}$&59.145 \\
+						Age & 0.015 $(0.000)^{***}$ &1.015& 0.071 $(0.001)^{***}$ &1.074\\
+						Female & 0.043 $(0.003)^{***}$ &1.044& 1.501 $(0.015)^{***}$&4.486 \\
+						PM2.5 & -0.205 $(0.005)^{***}$ &0.815& 0.263 $(0.026)^{***}$&1.301 \\
+						CO & 0.105 $(0.003)^{***}$ &1.111& -0.289 $(0.015)^{***}$ &0.749\\
+						NO2 & -0.129 $(0.003)^{***}$ &0.879& 0.106 $(0.013)^{***}$ &1.112\\
+						PM10 & 0.173 $(0.005)^{***}$ &1.189& -0.219 $(0.024)^{***}$&0.803 \\
+						DD & 1.020 $(0.004)^{***}$ &2.773& -1.550 $(0.043)^{***}$ &0.212\\
+						DLD & 0.483 $(0.005)^{***}$ &1.621& -0.207 $(0.052)^{***}$ &0.813\\
+						Adjustment Disorder & -0.099 $(0.007)^{***}$ &0.905& -1.536 $(0.043)^{***}$&0.215 \\
+						Anxiety & 0.037 $(0.003)^{***}$ &1.038& -4.033 $(0.017)^{***}$ &0.018\\
+						BDD & -0.290 $(0.046)^{***}$& 0.748& 0.457 $(0.215)^{*}$ &1.579\\
+						ASD & 0.385 $(0.003)^{***}$ &1.470& -3.470 $(0.030)^{***}$&0.031 \\
+						\bottomrule
+					\end{tabular}
+				}
+				\caption{Southern}
+			\end{table}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Eastern}
+		
+		\begin{center}
+			\begin{table}[h!]
+				\setlength{\tabcolsep}{3pt}
+				\resizebox{0.55\linewidth}{!}{%
+					\begin{tabular}{lcccc}
+						\toprule
+						& \multicolumn{2}{c}{Count Model} & \multicolumn{2}{c}{Zero-inflation Model} \\
+						\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+						Variable & Estimate (Std. Error) & $\exp{\beta}$ & Estimate (Std. Error) & $\exp{\beta}$\\
+						\midrule
+						(Intercept) & 2.501 $(0.018)^{***}$ &12.195& 3.796 $(0.045)^{***}$&44.523 \\
+						Age & 0.030 $(0.001)^{***}$ &1.030& 0.066 $(0.003)^{***}$&1.068 \\
+						Female & 0.075 $(0.010)^{***}$ &1.078& 1.349 $(0.047)^{***}$&3.854 \\
+						PM2.5 & 0.108 $(0.016)^{***}$ &1.114& 0.604 $(0.076)^{***}$&1.829 \\
+						CO & 0.216 $(0.051)^{***}$ &1.241& -2.885 $(0.262)^{***}$&0.056 \\
+						NO2 & -0.323 $(0.050)^{***}$ &0.724& 2.362 $(0.252)^{***}$&10.612 \\
+						PM10 & -0.056 $(0.011)^{***}$ &0.946& -0.438 $(0.052)^{***}$&0.645 \\
+						DD & 0.925 $(0.017)^{***}$ &2.522& -0.706 $(0.156)^{***}$&0.494 \\
+						DLD & 0.194 $(0.025)^{***}$ &1.214& -0.723 $(0.197)^{***}$&0.485 \\
+						Adjustment Disorder & -0.001 $(0.028)^{}$ &0.999& -1.017 $(0.168)^{***}$&0.362 \\
+						Anxiety & -0.157 $(0.011)^{***}$ &0.855& -3.781 $(0.057)^{***}$&0.023 \\
+						BDD & -0.451 $(0.094)^{***}$ &0.637& -2.037 $(0.467)^{***}$&0.130 \\
+						ASD & 0.387 $(0.011)^{***}$ &1.473& -4.090 $(0.085)^{***}$&0.017 \\
+						\bottomrule
+					\end{tabular}
+				}
+				\caption{Eastern}
+			\end{table}
+		\end{center}
+	\end{frame}
+	
+	%------------------------------------------------
+	\setbeamertemplate{headline}{}
+	\begin{frame}
+		\begin{center}
+			{\Huge\calligra Thanks for your listening}
+		\end{center}
+	\end{frame}
+	
+	
+	%----------------------------------------------------------------------------------------
+	
+\end{document}
